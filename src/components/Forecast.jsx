@@ -16,8 +16,8 @@ function Forecast() {
     
 
   return (
-    <div className="mt-0">
-      <h2 className="text-lg font-semibold w-full flex justify-center py-2 px-8 bg-white/30 backdrop-blur rounded-xl mb-4 custom text-[#DE8E09]">Hourly forecast</h2>
+    <div className="mt-4 xl:-mt-10">
+      <h2 className="text-lg font-semibold w-full xl:w-1/4 flex justify-center py-2 px-8 bg-white/30 backdrop-blur rounded-xl mb-4 custom text-[#DE8E09]">Hourly forecast</h2>
       <div className="w-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-2 justify-center">
         {forecastData.map((data, index) => (
           <div

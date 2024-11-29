@@ -24,7 +24,7 @@ function Header() {
   }, []);
 
   return (
-    <div className="w-full flex justify-between items-center mt-6">
+    <div className="w-full flex justify-between items-center mt-6 md:mt-4">
       <div className="flex gap-2 items-center text-white">
         <h1 className="text-4xl font-bold">{time}</h1>
         <div className="font-semibold">
