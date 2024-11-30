@@ -30,7 +30,7 @@ function Forecast() {
           </div>
         ))}
       </div>
-      <h2 className='w-full text-center my-4 font-bold custom text-xl text-blue-900'>Made by Hadil | OpenWeatherMap</h2>
+      <h2 className='w-full text-center my-4 font-bold custom text-xl text-yellow-500'>Made by <a href="https://nxt-stark.github.io/Personal-Website/" className='text-blue-900'>Hadil</a> | WeatherBit</h2>
     </div>
   );
 }
