@@ -31,7 +31,7 @@ export const fetchLocationSuggestions = async (query) => {
 
 
 export const fetchWeatherData = async (city, state, country) => {
-    const API_KEY = "25b45296de4c41119f814bd5cf99dd6e"; // Replace with your actual API key
+    const API_KEY = "dc69268fd59541f390539df23f081b29"; // Replace with your actual API key
     const url = `https://api.weatherbit.io/v2.0/current?city=${city}&state=${state}&country=${country}&key=${API_KEY}`;
   
     const response = await fetch(url);
