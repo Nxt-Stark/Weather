@@ -1,9 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi";
+import { useSelector } from 'react-redux';
+import { fetchLocationSuggestions, fetchWeatherData } from "../services/GetApi";
 
-function WeatherCard({ temp }) {
+function WeatherCard({ setSelectedLocation }) {
+  const [searchQuery, setSearchQuery] = useState("");
   const sunWithCloud = "https://i.ibb.co/ZfnT78Z/image-5.png";
 
+  const [weather, setWeather] = useState(null);
+  const defaultLocation = {
+    city: "Tirur",
+    state: "Kerala",
+    country: "India",
+  };
   const forecastData = [
     { date: "01-12-2024", temp: "30°C", icon: sunWithCloud },
     { date: "02-12-2024", temp: "30°C", icon: sunWithCloud },
@@ -11,6 +20,25 @@ function WeatherCard({ temp }) {
     { date: "04-12-2024", temp: "30°C", icon: sunWithCloud },
     { date: "05-12-2024", temp: "30°C", icon: sunWithCloud },
   ];
+  const locationFetch = useSelector((state) => state.location);
+  const location = localStorage.getItem("location") || location || defaultLocation;
+  useEffect(() => {
+    const fetchWeather = async () => {
+        try {
+            const { city, state, country } = location;
+            if (city && state && country) {
+                const weather = await fetchWeatherData(city, state, country);
+                setWeather(weather);
+            }
+        } catch (error) {
+            console.error("Error fetching weather data:", error);
+            setWeather(null);
+        }
+    };
+
+    fetchWeather();
+}, [location]);
+
 
   const containerRef = useRef(null);
   const [isScrolledLeft, setIsScrolledLeft] = useState(false);
@@ -61,7 +89,7 @@ function WeatherCard({ temp }) {
         {/* Current Weather */}
         <div className="flex flex-row lg:flex-col xl:flex-row justify-between items-center bg-white/30 backdrop-blur p-4 rounded-xl">
           <div className="text-5xl lg:text-8xl text-yellow-500 font-bold">
-            {temp}°C
+          {Math.round(weather?.data[0]?.app_temp)}°C
           </div>
           <div className="text-sm text-blue-900 font-bold">
             Humidity: 65% <br />

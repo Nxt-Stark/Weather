@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setLocation, loadLocationFromStorage } from "../redux/locationSlice";
 import { fetchLocationSuggestions, fetchWeatherData } from "../services/GetApi";
-import WeatherCard from "./WeatherCard";
 
 function SearchBar() {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState({
-    city: "Vishakapattanam",
-    state: "Tamil Nadu",
-    country: "India",
-  });
+  const dispatch = useDispatch();
+
+  const selectedLocation = useSelector((state) => state.location);
+
   const [weather, setWeather] = useState(null);
 
   const handleInputChange = async (e) => {
@@ -25,22 +25,33 @@ function SearchBar() {
   };
 
   const handleSuggestionClick = async (suggestion) => {
-    setSelectedLocation({
+    const location = {
       city: suggestion.city || suggestion.name,
       state: suggestion.state,
       country: suggestion.country,
-    });
+      lat: suggestion?.lat || null, // Use optional chaining to avoid errors
+      lon: suggestion?.lng || suggestion?.lon || null, // Use optional chaining to avoid errors
+      timezone: suggestion?.timezone || null,
+    };
+
+    dispatch(setLocation(location)); // Update Redux and local storage
     setQuery("");
     setSuggestions([]);
   };
 
-  // Fetch weather whenever selectedLocation changes
+  useEffect(() => {
+    // Load saved location from local storage
+    dispatch(loadLocationFromStorage());
+  }, [dispatch]);
+
   useEffect(() => {
     const fetchWeather = async () => {
       try {
         const { city, state, country } = selectedLocation;
-        const weatherData = await fetchWeatherData(city, state, country);
-        setWeather(weatherData);
+        if (city && state && country) {
+          const weatherData = await fetchWeatherData(city, state, country);
+          setWeather(weatherData);
+        }
       } catch (error) {
         console.error("Error fetching weather data:", error);
         setWeather(null);
@@ -52,10 +63,10 @@ function SearchBar() {
 
   return (
     <div className="flex flex-col lg:flex-row w-full justify-between items-center gap-4 my-4 xl:my-0">
-      <div className="text-center text-white">
+      <div className="text-center lg:text-left text-white">
         <h1 className="font-bold text-3xl">{selectedLocation.city}</h1>
         <p className="font-semibold">
-          {selectedLocation.state}, {selectedLocation.country},
+          {selectedLocation.state}, {selectedLocation.country}
         </p>
       </div>
       <div className="relative w-full max-w-lg">
@@ -90,7 +101,6 @@ function SearchBar() {
       </div>
     </div>
   );
- const temp = weather.data[0].app_temp;
 }
 
 export default SearchBar;

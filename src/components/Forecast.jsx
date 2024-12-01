@@ -30,8 +30,9 @@ function Forecast() {
           </div>
         ))}
       </div>
-      <h2 className='w-full text-center my-4 font-bold custom text-xl text-yellow-500'>Made by <a href="https://nxt-stark.github.io/Personal-Website/" className='text-blue-900'>Hadil</a> | WeatherBit</h2>
-    </div>
+      <div className='w-full my-2 flex justify-center'>
+      <h2 className='text-center font-bold custom text-xl text-[#DE8E09] bg-white/30 px-6 py-1 backdrop-blur rounded-lg'>Made by <a href="https://nxt-stark.github.io/Personal-Website/" className='text-blue-900'>Hadil</a> | WeatherBit</h2>
+    </div></div>
   );
 }
 
